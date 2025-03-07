@@ -7,7 +7,7 @@ The **main difference** between `Server-Sent Events` **(SSE)** *v/s* `Asynchrono
 
 <br>
 
-| Feature | **First HTML (SSE-based)** | **Second HTML (AJAX-based Polling)** |
+| Feature | **SSE** | **AJAX** |
 |---------|-----------------|----------------------|
 | **Data Fetching Method** | Uses **Server-Sent Events (SSE)** via `EventSource` | Uses **AJAX polling** with `$.ajax()` |
 | **Efficiency** | **More efficient** – Uses a single connection to receive continuous updates | **Less efficient** – Sends a new request every second, adding load to the server |

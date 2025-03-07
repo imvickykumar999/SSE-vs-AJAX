@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-time Time Display (SSE)</title>
+    <style>
+        /* Background Gradient */
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #40C3FF, #007BFF);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        /* Main Card Container */
+        .card {
+            background: #f4f9ff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+            text-align: center;
+            min-width: 300px;
+        }
+
+        /* Title Styling */
+        .title {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #007BFF;
+        }
+
+        /* Time Display Box */
+        .time-box {
+            margin-top: 15px;
+            padding: 15px;
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #007BFF;
+            border: 2px solid #007BFF;
+            border-radius: 10px;
+            display: inline-block;
+            min-width: 100px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Fade effect on update */
+        .fade {
+            opacity: 0.5;
+            transition: opacity 0.3s ease-in-out;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <div class="title">Time in Asia / Kolkata</div>
+        <div id="time" class="time-box">...</div>
+    </div>
+
+    <script>
+        const eventSource = new EventSource("/events/");
+
+        eventSource.onmessage = function(event) {
+            let timeBox = document.getElementById("time");
+
+            // Apply fade effect before updating time
+            timeBox.classList.add("fade");
+
+            setTimeout(() => {
+                timeBox.textContent = event.data;  // Update the time
+                timeBox.classList.remove("fade"); // Remove fade effect
+            }, 300);
+        };
+
+        eventSource.onerror = function(event) {
+            console.error("SSE error:", event);
+            eventSource.close();  // Close connection on error
+        };
+    </script>
+
+</body>
+</html>

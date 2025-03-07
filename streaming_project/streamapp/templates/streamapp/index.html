@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Streaming Data from Django</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        /* General Page Styling */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(to right, #4facfe, #00f2fe); /* Gradient background */
+        }
+
+        /* Container Centering */
+        .container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            min-width: 320px;
+        }
+
+        /* Message Box Styling */
+        #message {
+            font-size: 26px;
+            font-weight: bold;
+            text-align: center;
+            padding: 20px;
+            background: #f9f9f9;
+            border: 3px solid #007BFF;
+            border-radius: 10px;
+            margin-top: 20px;
+            display: inline-block;
+            color: #333;
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Heading Styling */
+        h2 {
+            color: #007BFF;
+            font-size: 28px;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Time in Asia / Kolkata</h2>
+        <div id="message">...</div>
+    </div>
+
+    <script>
+        function fetchStream() {
+            $.ajax({
+                url: "/stream/",
+                type: "GET",
+                dataType: "json", // Expect JSON response
+                success: function(response) {
+                    if (response.message) {
+                        $("#message").text(response.message); // Update in place
+                    }
+                },
+                complete: function() {
+                    setTimeout(fetchStream, 1000); // Fetch new message every second
+                }
+            });
+        }
+
+        $(document).ready(function () {
+            fetchStream(); // Start fetching messages
+        });
+    </script>
+
+</body>
+</html>
